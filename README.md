@@ -1,98 +1,80 @@
-CALCULADORA DE IRRF – FOLHA DE PAGAMENTO (2026)
-IGARAPÉ DIGITAL · ANDERSON MARINHO
+# Calculadora de IRRF – Folha de Pagamento (2026)
+Igarapé Digital · by Anderson Marinho
 
-============================================================
-1) VISÃO GERAL
-============================================================
-Este projeto é uma calculadora técnica de IRRF na fonte (folha de pagamento), criada para simulação, conferência e entendimento aprofundado da BASE TRIBUTÁVEL, considerando as regras vigentes e, principalmente, as alterações introduzidas pela Medida Provisória que redefine a sistemática do IR mensal a partir de 2026.
+## Visão Geral
+Este repositório contém um simulador técnico de IRRF (retenção na fonte) voltado para conferência de folha de pagamento, com foco em transparência e rastreabilidade do cálculo: base tributável, método aplicado, IR antes da redução e IR final.
 
-O foco é transparência técnica: mostrar a lógica fiscal, permitir comparação entre métodos e registrar memória de cálculo para análise de RH/DP, Controladoria e Auditoria.
+O projeto foi pensado para uso prático por RH/DP, Controladoria e Auditoria, principalmente em cenários de validação de parametrizações e conferências de mudanças legais.
 
-============================================================
-2) CONTEXTO LEGAL – MEDIDA PROVISÓRIA (IRRF 2026)
-============================================================
-A Medida Provisória com vigência a partir de janeiro de 2026 trouxe mudanças relevantes na apuração do IRRF mensal, com destaque para:
+## Destaque 2026 – Redução do IR mensal (Lei nº 15.270/2025)
+A partir de janeiro de 2026, passou a existir uma regra de redução do imposto mensal que, na prática:
+- zera o IR para rendimentos tributáveis mensais até R$ 5.000,00 (redução “até R$ 312,89”, limitada ao imposto devido);
+- aplica redução parcial para rendimentos entre R$ 5.000,01 e R$ 7.350,00, por fórmula linear;
+- não concede redução para rendimentos acima de R$ 7.350,00.
 
-- Manutenção da tabela progressiva mensal do IR
-- Criação de um mecanismo de redução do imposto para rendas mensais até R$ 7.350,00
-- Isenção prática do IR para rendas mensais até R$ 5.000,00, via redutor
-- Redução decrescente do imposto para rendas entre R$ 5.000,01 e R$ 7.350,00
-- Nenhuma redução aplicada para rendas acima de R$ 7.350,00
+Base legal (texto oficial – Art. 3º-A da Lei nº 15.270/2025):
+- Faixa até R$ 5.000,00: redução “até R$ 312,89 (de modo que o imposto devido seja zero)”
+- Faixa de R$ 5.000,01 até R$ 7.350,00: redução = 978,62 – (0,133145 × rendimentos tributáveis sujeitos à incidência mensal)
+- Acima de R$ 7.350,00: redução não aplicável
 
-Ponto técnico: a MP não precisa alterar a tabela (faixas/alíquotas) para mudar o resultado final. Ela cria uma etapa posterior ao cálculo do IR pela base tributável, impactando o valor final a ser retido na fonte.
+Observação técnica: a redução é aplicada sobre o imposto apurado (etapa posterior ao cálculo pela tabela progressiva). Ela não altera a base tributável; altera o imposto final.
 
-============================================================
-3) CONCEITO CENTRAL – BASE TRIBUTÁVEL (TECNICIDADE)
-============================================================
-Base tributável não é salário bruto. A base do IRRF depende do método adotado.
+## Conceito central: Base Tributável (tecnicidade)
+Base tributável não é salário bruto. O IRRF depende do método.
 
-O simulador trabalha com dois modelos:
+Este simulador trabalha com:
+- Modelo 1: Deduções legais (padrão)
+- Modelo 2: Desconto simplificado (comparativo)
 
-------------------------------------------------------------
-3.1) MODELO 1 – DEDUÇÕES LEGAIS (PADRÃO)
-------------------------------------------------------------
-Modelo padrão e mais comum na folha.
-
-Componentes da base:
+### Modelo 1 – Deduções legais (padrão do sistema)
+Componentes típicos da base:
 - Remuneração tributável
 - (-) INSS
-- (-) Dedução por dependentes
-- (-) Pensão alimentícia dedutível
-- (-) Outras deduções legais
+- (-) dedução por dependentes (quando aplicável)
+- (-) pensão alimentícia dedutível (quando aplicável)
+- (-) outras deduções legais (quando aplicável)
 
 Fórmula conceitual:
 Base Legal = (Rendimento – INSS) – Deduções Legais
 
-Este é o método configurado como PADRÃO no simulador:
-- “Forçar opção” ligado
-- “Só deduções legais” selecionado por padrão
-
-------------------------------------------------------------
-3.2) MODELO 2 – DESCONTO SIMPLIFICADO
-------------------------------------------------------------
-Modelo alternativo previsto em lei, substitui deduções legais por um valor fixo mensal.
-
-Neste projeto (configuração atual do simulador):
+### Modelo 2 – Desconto simplificado (configuração do simulador)
+Neste repositório, o desconto simplificado está configurado como:
 Base Simplificada = Rendimento – Desconto Simplificado
-Observação importante: nesta configuração, NÃO se deduz INSS na base simplificada (decisão de configuração do simulador).
 
-Essa abordagem deixa explícito que:
-- O simplificado não é automaticamente mais vantajoso
-- Pode gerar base maior e IR maior dependendo do cenário
-- A escolha precisa ser consciente e comparável
+Importante: por decisão de configuração do simulador (para comparabilidade e alinhamento com o objetivo interno do projeto), nesta base simplificada não se deduz INSS. Isso é uma escolha do projeto (não uma afirmação de regra universal).
 
-============================================================
-4) REDUÇÃO DO IR – REGRA 2026 (APÓS O CÁLCULO DO IR)
-============================================================
-Após calcular o IR pela tabela progressiva mensal, aplica-se a redução (quando habilitada):
+## Funcionalidades
+- Ano-base 2026 ativo por padrão
+- Opção padrão forçada: “Só deduções legais”
+- INSS automático (tabela progressiva) com opção de desligar e informar manualmente
+- Comparativo Legal vs Simplificado (base, alíquota efetiva e IR)
+- Memória de cálculo detalhada (auditável)
+- Barra visual (IR a pagar vs redução aplicada) usando as cores Sonova
+- Footer com chave Pix para doação
 
-- Renda mensal até R$ 5.000,00: IR reduzido a zero
-- Renda entre R$ 5.000,01 e R$ 7.350,00: aplica redutor conforme a fórmula oficial
-- Renda acima de R$ 7.350,00: não aplica redução
+## Como usar
+1) Abra o arquivo index.html no navegador (projeto 100% estático).
+2) Informe a remuneração tributável.
+3) Mantenha “INSS Auto” ligado (recomendado) ou informe o INSS manualmente.
+4) (Opcional) Informe dependentes, pensão e outras deduções legais.
+5) Clique em Calcular e consulte:
+   - base escolhida
+   - IR antes de redução
+   - redução 2026
+   - IR final
+   - memória de cálculo
 
-Importante: a redução NÃO altera a base tributável; ela altera o imposto final apurado.
+## Estrutura do projeto
+- index.html  (interface)
+- style.css   (estilo)
+- app.js      (regras, tabelas e cálculo)
+- README.md   (este arquivo)
 
-============================================================
-5) FUNCIONALIDADES
-============================================================
-- Cálculo automático de INSS progressivo (quando “Auto” estiver ligado)
-- Simulação mensal e 13º (exclusivo na fonte)
-- Comparativo entre métodos (legal vs simplificado)
-- Destaque visual do método escolhido
-- Barra visual: IR a pagar vs redução aplicada (cores Sonova)
-- Memória de cálculo completa e auditável
-- Interface corporativa e orientada à conferência
+## Aviso
+Este simulador é destinado a conferência e entendimento do cálculo na fonte (folha). Não substitui sistemas oficiais e não constitui orientação fiscal/jurídica.
 
-============================================================
-6) AVISO
-============================================================
-Este simulador é para conferência na fonte (folha) e fins de estudo/validação.
-Não substitui sistemas oficiais de folha e não gera obrigação fiscal.
-
-============================================================
-7) AUTORIA E APOIO
-============================================================
+## Autor e apoio
 Igarapé Digital · by Anderson Marinho
 
-Doações (Pix - chave):
+Doações (Pix – chave):
 oab.adv.anderson@gmail.com
