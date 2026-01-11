@@ -150,10 +150,10 @@ const INSS_TABELAS = {
     label: "INSS 2026 (provisório)",
     teto: 8157.41,
     faixas: [
-      { ate: 1518.00, aliquota: 0.075 },
-      { ate: 2793.88, aliquota: 0.09 },
-      { ate: 4190.83, aliquota: 0.12 },
-      { ate: 8157.41, aliquota: 0.14 },
+      { ate: 1621.00, aliquota: 0.075 },
+      { ate: 2902.84, aliquota: 0.09 },
+      { ate: 4354.27, aliquota: 0.12 },
+      { ate: 8475.55, aliquota: 0.14 },
     ]
   }
 };
